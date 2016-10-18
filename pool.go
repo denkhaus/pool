@@ -12,6 +12,7 @@ import (
 	"container/list"
 	"fmt"
 	"log"
+	"runtime/debug"
 	"sync"
 	"time"
 )
@@ -60,6 +61,8 @@ func (pool *Pool) subworker(job *Job) {
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("panic while running job:", err)
+			debug.PrintStack()
+
 			job.Result = nil
 			job.Err = fmt.Errorf(fmt.Sprintf("%v", err))
 		}
