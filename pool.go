@@ -61,7 +61,7 @@ func (pool *Pool) subworker(job *Job) {
 		if err := recover(); err != nil {
 			log.Println("panic while running job:", err)
 			job.Result = nil
-			job.Err = fmt.Errorf(err.(string))
+			job.Err = fmt.Errorf(fmt.Sprintf("%v", err))
 		}
 	}()
 	job.Result = job.F(job.Args...)
